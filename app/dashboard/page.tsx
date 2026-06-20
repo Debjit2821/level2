@@ -62,6 +62,28 @@ import { formatAddress, formatAmount, formatTimestamp } from "@/lib/utils";
 
 export default function Dashboard() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [isFunding, setIsFunding] = useState(false);
+
+  const handleFriendbot = async () => {
+    if (!address) return;
+    setIsFunding(true);
+    toast("info", "Funding Account", "Requesting 10,000 XLM from Friendbot...");
+    try {
+      const res = await fetch(`https://friendbot.stellar.org/?addr=${address}`);
+      if (res.ok) {
+        toast("success", "Account Funded", "Your account was successfully funded with 10,000 Testnet XLM.");
+        refetchPayrolls();
+        queryClient.invalidateQueries({ queryKey: ["xlmBalance", address] });
+      } else {
+        throw new Error("Friendbot rate limit reached or failed.");
+      }
+    } catch (err: any) {
+      toast("error", "Funding Failed", err.message || "Failed to fund account.");
+    } finally {
+      setIsFunding(false);
+    }
+  };
   
   // Zustand State
   const address = usePayrollStore((s) => s.address);
@@ -264,6 +286,11 @@ export default function Dashboard() {
                   <Coins className="h-3.5 w-3.5 text-indigo-400" />
                   <span className="text-xs font-mono font-bold text-cyan-400">{formatAmount(balance)} XLM</span>
                 </div>
+                {parseFloat(balance) === 0 && (
+                  <Button variant="secondary" size="sm" isLoading={isFunding} onClick={handleFriendbot}>
+                    Fund (Friendbot)
+                  </Button>
+                )}
                 <Button variant="outline" size="sm" onClick={handleDisconnect}>
                   Disconnect
                 </Button>
