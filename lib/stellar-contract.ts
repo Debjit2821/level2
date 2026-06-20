@@ -179,7 +179,16 @@ export async function prepareWriteTx(
   sourceAddress: string
 ): Promise<string> {
   // 1. Fetch current sequence number of the signing account
-  const sourceAccount = await server.getAccount(sourceAddress);
+  let sourceAccount;
+  try {
+    sourceAccount = await server.getAccount(sourceAddress);
+  } catch (error: any) {
+    const errMsg = (error.message || "").toLowerCase();
+    if (errMsg.includes("not found") || errMsg.includes("404") || error.status === 404) {
+      throw new Error(`Account ${sourceAddress} is not funded on Stellar Testnet. Please fund it using Friendbot.`);
+    }
+    throw error;
+  }
 
   // 2. Build standard contract invocation transaction
   const tx = new TransactionBuilder(sourceAccount, {
