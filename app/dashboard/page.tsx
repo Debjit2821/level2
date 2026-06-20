@@ -234,10 +234,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-[#07080d] text-foreground flex flex-col font-sans">
-      {/* Background Gradients */}
-      <div className="absolute top-0 right-0 w-[40%] h-[40%] rounded-full bg-indigo-900/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full bg-cyan-900/5 blur-[120px] pointer-events-none" />
-
       {/* Header */}
       <header className="sticky top-0 z-30 w-full border-b border-white/[0.05] bg-[#07080d]/65 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -247,7 +243,7 @@ export default function Dashboard() {
             </Link>
             <div className="flex items-center gap-2">
               <Coins className="h-5 w-5 text-indigo-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent">
+              <span className="font-bold text-base text-white">
                 StellarPay Workspace
               </span>
             </div>

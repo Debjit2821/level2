@@ -1,0 +1,17 @@
+# Ignore Rust build targets and build cache files
+**/target/
+contracts/payment_manager/target/
+target/
+
+# Ignore local Next.js build cache and packages
+node_modules/
+.next/
+out/
+build/
+
+# Ignore git and local config/env
+.git/
+.env*
+.vercel/
+*.pem
+*.tsbuildinfo

@@ -1,130 +1,187 @@
-# StellarPay - Decentralized Web3 Payroll & Escrow Milestones
+<h1 align="center">StellarPay Dashboard</h1>
 
-StellarPay is a production-grade decentralized payroll management application built on Stellar Soroban smart contracts. It implements an end-to-end milestone settlement and timesheet payout system, ensuring secure, non-custodial transactions for Web3 organizations and their workforce.
+<p align="center">
+  A polished Next.js frontend for a Soroban smart contract that lets organizations manage decentralized payroll, register timesheet claims, secure milestone payouts using escrow, and track real-time blockchain event streams.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-0b1220?style=for-the-badge&logo=react" alt="React 19" />
+  <img src="https://img.shields.io/badge/Next.js-15-0b1220?style=for-the-badge&logo=nextdotjs" alt="Next.js 15" />
+  <img src="https://img.shields.io/badge/Stellar-Soroban%20Testnet-0b1220?style=for-the-badge&logo=stellar" alt="Stellar Soroban Testnet" />
+  <img src="https://img.shields.io/badge/StellarWalletsKit-v2-0b1220?style=for-the-badge" alt="StellarWalletsKit" />
+</p>
+
+## Live Demo & Explorer
+
+- **Live Vercel Demo**: https://level2-lilac.vercel.app
+- **Stellar Expert Explorer**: https://stellar.expert/explorer/testnet/contract/CCLSPGZGNAPW7H7UPZETSVJ33XI3QYFRV2T2SJCQTK4655LEM3FFKZO7
+- **Contract ID**: `CCLSPGZGNAPW7H7UPZETSVJ33XI3QYFRV2T2SJCQTK4655LEM3FFKZO7`
+
+## Freighter wallet address
+
+- Freighter wallet ID: `GDT37UGSKAIKDUGC73VHAI6HASL27O5YTCHONKRIIH7AJBMBIQPWRVX3`
 
 ## Overview
-StellarPay adapts a decentralized payment manager contract to a payroll workflow. Employees submit detailed timesheet claims specifying their employer as the payer, payment amount, and milestone scope. Employers can then inspect these requests, and choose to settle them instantly (direct payout) or lock the funds securely in the contract (escrow payout). Escrowed salaries are held by the smart contract until milestones are satisfied and approved by the employer.
 
----
+This project combines:
 
-## Features
+- A Soroban smart contract (`PaymentManager`) for secure payment routing, claim registration, and escrow milestones
+- A Next.js 15 dashboard for interacting with the contract
+- StellarWalletsKit integration for authenticated write actions across multiple browsers and wallets
+- Read-only contract calls for timesheet invoice lookups, activity event stream, and total invoices count
 
-### 🔑 Wallet Integration
-* **Multi-Wallet Support**: Full integration with `@creit.tech/stellar-wallets-kit`, enabling Freighter, Albedo, and xBull wallet selection.
-* **Responsive Auth Modal**: Clean, interactive modal to connect, show public address, and view live XLM balance in real-time.
-* **Friendly Error Messages**: Clear toast warnings for common faults (User rejected transaction, wallet extensions not found/installed, and insufficient account balance).
+The current frontend is designed as a clean operator console with live status output, wallet visibility, escrow milestone summaries, and responsive cards for desktop and mobile.
 
-### 📝 Smart Contract Integration
-* **Invoice State Reads**: Live queries for invoice records and cumulative counts on Stellar Testnet.
-* **Secure Payout Writes**: Direct contract calls for claim creation, direct funding, escrow holding, escrow releases, refunds, and cancellations.
-* **Simulate & Prepare**: Transaction builder automatically runs contract simulations to estimate gas fees and append footprint resources before requesting signatures.
+## What You Can Do
 
-### 📡 Real-Time Synchronizations & Events
-* **Decoded Event Loops**: Periodically poll Stellar ledger logs via RPC and parse base64 XDR events into a readable stream.
-* **Instant Feed**: Users see live updates (milestones created, funded, released, refunded) without refreshing the page.
+- **Register a new Claim/Invoice**: Payees can create invoices detailing the payer address, payment amount, title, and description.
+- **Pay directly (Instantly)**: Payers can directly settle a pending invoice, transferring XLM tokens instantly to the payee.
+- **Fund Escrow (Milestone Lock)**: Payers can lock the funds in the smart contract escrow instead of paying directly, mapping the salary to milestone goals.
+- **Release Escrow**: Payer can release locked escrow funds directly to the payee upon successful verification of milestones.
+- **Refund/Cancel Claims**: Payees can cancel their pending invoices before funding. Payers can refund locked escrows back to their account under agreed cancellation conditions.
+- **Inspect Live Event Stream**: Decodes event logs from the contract and updates the dashboard instantly.
 
-### 📊 Payout Metrics & History Tracking
-* **Metrics Cards**: Summarizes total paid out volume, escrow held volume, pending claims, and staff employee headcount.
-* **Transaction Status Tracker**: Panel displays all signatures in progress (Pending, Success, Failed) alongside hashes and links to Stellar Expert Explorer.
+## Smart Contract Behavior
 
----
+The Soroban contract stores each invoice with:
+
+- `id`
+- `payee`
+- `payer`
+- `amount`
+- `token`
+- `status` (Pending, Paid, Released, Refunded, Cancelled)
+- `is_escrow`
+- `title`
+- `description`
+- `created_at`
+
+Exposed contract methods:
+
+- `create_invoice`
+- `pay_invoice`
+- `fund_escrow`
+- `release_escrow`
+- `refund_escrow`
+- `cancel_invoice`
+- `get_invoice`
+- `get_invoices`
+- `get_total_invoices`
+
+## Frontend Highlights
+
+- StellarWalletsKit connect flow supporting multiple wallets (Freighter, Albedo, xBull)
+- Live contract response panel displaying transaction hash, status, and Explorer link
+- Human-readable timesheet summary formatting and transaction metrics
+- Auto-sync of active payroll count on load and after execution
+- Responsive dashboard layout with separate setup, action forms, wallet dashboard, and real-time logs panels
 
 ## Tech Stack
-* **Framework**: Next.js 15 (App Router, TypeScript)
-* **Styling**: Tailwind CSS & Lucide Icons
-* **Wallet Management**: StellarWalletsKit
-* **Blockchain Core**: `@stellar/stellar-sdk` (Soroban RPC, Horizon, XDR parsers)
-* **State Store**: Zustand
-* **Async Queries**: TanStack Query (React Query)
 
----
+- React 19 / Next.js 15
+- Tailwind CSS
+- `@stellar/stellar-sdk`
+- `@creit.tech/stellar-wallets-kit`
+- Zustand State Management
+- TanStack Query
+- Soroban smart contract in Rust
 
-## Folder Structure
+## Project Structure
+
 ```text
-/app               # Next.js Pages and Workspace Dashboards
-/components        # Theme Providers & Custom Styled UI Design Elements
-/contracts         # PaymentManager Rust contract source files & tests
-/hooks             # Zustand store states & TanStack Query mutations
-/lib               # Configuration files, wallet kits, contract API clients
-/scripts           # Automation deployment scripts
-/types             # TypeScript type definitions
-/public            # Static icons, SVG assets
+.
+|-- app/
+|   |-- dashboard/
+|   |   `-- page.tsx
+|   |-- layout.tsx
+|   |-- page.tsx
+|   `-- globals.css
+|-- components/
+|   |-- ui-components.tsx
+|   |-- providers.tsx
+|   `-- theme-provider.tsx
+|-- contracts/
+|   |-- payment_manager/
+|   |   |-- src/
+|   |   |   `-- lib.rs
+|   |   `-- Cargo.toml
+|-- hooks/
+|   |-- use-payroll-store.ts
+|   `-- use-payroll-queries.ts
+|-- lib/
+|   |-- config.json
+|   |-- stellar-contract.ts
+|   |-- stellar-wallet.ts
+|   `-- utils.ts
+|-- scripts/
+|   `-- deploy.js
+|-- types/
+|   `-- payroll.ts
+|-- README.md
+`-- package.json
 ```
 
----
+## Local Setup
 
-## Environment Variables
+### Prerequisites
+
+- Node.js installed
+- npm installed
+- Freighter or other compatible Stellar wallet extension
+- Access to Stellar Soroban testnet
+
+### Install
+
+```bash
+npm install
+```
+
+### Run The App
+
+```bash
+npm run dev
+```
+
+### Production Build
+
+```bash
+npm run build
+```
+
+### Environment Variables
 
 Create a `.env.local` file in the root directory:
 
 ```bash
-# Deployed Contract ID on Stellar Testnet
-NEXT_PUBLIC_CONTRACT_ID=CONTRACT_ADDRESS_HERE
-
-# Stellar network configurations
+NEXT_PUBLIC_CONTRACT_ID=CCLSPGZGNAPW7H7UPZETSVJ33XI3QYFRV2T2SJCQTK4655LEM3FFKZO7
 NEXT_PUBLIC_STELLAR_NETWORK=testnet
 NEXT_PUBLIC_SOROBAN_RPC_URL=https://soroban-testnet.stellar.org
 ```
 
-For this project, the contract address is:
-**CONTRACT_ADDRESS_HERE**: `CCLSPGZGNAPW7H7UPZETSVJ33XI3QYFRV2T2SJCQTK4655LEM3FFKZO7`
+## How The App Talks To Stellar
 
----
+Write actions are simulated and then signed using StellarWalletsKit:
 
-## Wallet Setup
+- `create_invoice`
+- `pay_invoice`
+- `fund_escrow`
+- `release_escrow`
+- `refund_escrow`
+- `cancel_invoice`
 
-1. Install a compatible Stellar browser extension:
-   * [Freighter Wallet](https://www.freighter.app/)
-   * [Albedo Link](https://albedo.link/)
-   * [xBull Wallet](https://xbull.app/)
-2. Switch your wallet network to **Testnet**.
-3. Fund your account with Testnet XLM using the Stellar Friendbot on the [Stellar Laboratory](https://lab.stellar.org/#account-creator?network=testnet) or by clicking Connect inside the StellarPay app.
+Read actions are simulated directly against the configured Soroban RPC endpoint:
 
----
+- `get_invoice`
+- `get_invoices`
+- `get_total_invoices`
 
-## Contract Deployment
+Configuration currently lives in [`lib/config.json`](./lib/config.json) and [`lib/stellar-contract.ts`](./lib/stellar-contract.ts).
 
-The Soroban smart contract is written in Rust. To compile and deploy it yourself:
+## User Flow
 
-1. **Build the WASM Binary**:
-   ```bash
-   cd contracts/payment_manager
-   stellar contract build
-   ```
-2. **Execute Deployment Script**:
-   ```bash
-   node scripts/deploy.js
-   ```
-   This script generates a deployer key pair on testnet, requests Friendbot funding, deploys the WASM to Testnet, and writes the resulting address to `.env.local` and `lib/config.json`.
-
----
-
-## Running Locally
-
-1. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-2. **Launch Dev Server**:
-   ```bash
-   npm run dev
-   ```
-3. Open [http://localhost:3000](http://localhost:3000) on your browser.
-
----
-
-## Deployment (Vercel)
-
-Deploy this app to Vercel in seconds:
-
-1. Push your code repository to GitHub/GitLab.
-2. Link your repository inside the Vercel Dashboard.
-3. Configure the environment variables (`NEXT_PUBLIC_CONTRACT_ID`, `NEXT_PUBLIC_STELLAR_NETWORK`, `NEXT_PUBLIC_SOROBAN_RPC_URL`).
-4. Click **Deploy**.
-
----
-
-## Example Transaction Hash
-
-Recent contract deployment transaction on testnet:
-**TRANSACTION_HASH_HERE**: `c4515e3bdc0897f21cc5dbec8c82cf0a936d4741cb74a8e158eb51b9fb00411a`
+1. Connect a wallet using StellarWalletsKit.
+2. Underfunded accounts can fund via Friendbot if connected.
+3. Employee/Payee creates a Timesheet Claim specifying the Employer/Payer address, amount, title, and description.
+4. Employer connects wallet, views Pending claims, and chooses to either Pay directly or Lock in Escrow.
+5. Payer releases the escrow to the Payee when milestones are completed.
+6. The activity feed polls ledger logs to display the real-time event updates.

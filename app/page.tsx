@@ -43,16 +43,12 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#07080d] overflow-hidden flex flex-col font-sans">
-      {/* Background Neon Gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900/10 blur-[120px] pointer-events-none" />
-      
       {/* Navigation Header */}
       <header className="sticky top-0 z-40 w-full border-b border-white/[0.05] bg-[#07080d]/65 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Coins className="h-6 w-6 text-indigo-500 animate-pulse" />
-            <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent">
+            <span className="font-bold text-lg tracking-tight text-white">
               StellarPay
             </span>
           </Link>
@@ -97,7 +93,7 @@ export default function Home() {
           
           <h1 className="text-4xl md:text-6xl font-black leading-tight tracking-tight text-white">
             Decentralized Payroll for the{" "}
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="text-indigo-400 font-bold">
               Web3 Workspace
             </span>
           </h1>
@@ -139,10 +135,8 @@ export default function Home() {
 
         {/* Right Preview Graphical Interface */}
         <div className="md:col-span-5 w-full relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl blur-3xl opacity-10 pointer-events-none" />
-          
           <Card className="relative border-white/[0.08] bg-[#0c0d12]/75 backdrop-blur-xl overflow-hidden shadow-2xl">
-            <div className="h-2 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500" />
+            <div className="h-1.5 w-full bg-indigo-500" />
             
             <CardContent className="p-6 flex flex-col gap-5">
               <div className="flex justify-between items-center border-b border-white/[0.05] pb-4">
