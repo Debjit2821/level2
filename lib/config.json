@@ -1,0 +1,6 @@
+{
+  "contractId": "CCLSPGZGNAPW7H7UPZETSVJ33XI3QYFRV2T2SJCQTK4655LEM3FFKZO7",
+  "network": "testnet",
+  "rpcUrl": "https://soroban-testnet.stellar.org",
+  "networkPassphrase": "Test Stellar Public Network ; September 2015"
+}
