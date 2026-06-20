@@ -137,10 +137,10 @@ export function useCreateInvoiceMutation() {
       // Convert amount back to stroops (7 decimal places)
       const stroops = BigInt(Math.floor(params.amount * 10000000));
       return [
-        nativeToScVal(new Address(caller)), // payee
-        nativeToScVal(new Address(params.payer)), // payer
+        nativeToScVal(new Address(caller.trim())), // payee
+        nativeToScVal(new Address(params.payer.trim())), // payer
         nativeToScVal(stroops, { type: "i128" }), // amount
-        nativeToScVal(new Address(XLM_TOKEN_CONTRACT)), // token
+        nativeToScVal(new Address(XLM_TOKEN_CONTRACT.trim())), // token
         nativeToScVal(params.title), // title
         nativeToScVal(params.description), // description
         nativeToScVal(params.isEscrow), // is_escrow
@@ -159,7 +159,7 @@ export function usePayInvoiceMutation() {
     (params: { invoiceId: number }, caller) => {
       return [
         xdr.ScVal.scvU64(new xdr.Uint64(params.invoiceId)),
-        nativeToScVal(new Address(caller)), // payer
+        nativeToScVal(new Address(caller.trim())), // payer
       ];
     }
   );
@@ -175,7 +175,7 @@ export function useReleaseEscrowMutation() {
     (params: { invoiceId: number }, caller) => {
       return [
         xdr.ScVal.scvU64(new xdr.Uint64(params.invoiceId)),
-        nativeToScVal(new Address(caller)), // caller
+        nativeToScVal(new Address(caller.trim())), // caller
       ];
     }
   );
@@ -191,7 +191,7 @@ export function useRefundEscrowMutation() {
     (params: { invoiceId: number }, caller) => {
       return [
         xdr.ScVal.scvU64(new xdr.Uint64(params.invoiceId)),
-        nativeToScVal(new Address(caller)), // caller
+        nativeToScVal(new Address(caller.trim())), // caller
       ];
     }
   );
@@ -207,7 +207,7 @@ export function useCancelInvoiceMutation() {
     (params: { invoiceId: number }, caller) => {
       return [
         xdr.ScVal.scvU64(new xdr.Uint64(params.invoiceId)),
-        nativeToScVal(new Address(caller)), // caller
+        nativeToScVal(new Address(caller.trim())), // caller
       ];
     }
   );
