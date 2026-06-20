@@ -12,7 +12,7 @@ import {
 import config from "./config.json";
 
 // Native XLM Token Contract Address on Stellar Testnet
-export const XLM_TOKEN_CONTRACT = "CDLZFC3SYJYDZT7K67VZ75HPJGWK37362CWTWFAZ545C6TWJGC5SGGUM";
+export const XLM_TOKEN_CONTRACT = "CACUJUEJWSNL544KHIGNSVBPRR33ZY3RGMRQHIMAK3VBFSTDPLYAC3T7";
 
 // Initialize RPC server
 export const server = new rpc.Server(config.rpcUrl, {
