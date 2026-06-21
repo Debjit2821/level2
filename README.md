@@ -70,7 +70,9 @@ Exposed contract methods:
 
 ## Frontend Highlights
 
-- StellarWalletsKit connect flow supporting multiple wallets (Freighter, Albedo, xBull)
+- StellarWalletsKit connect flow supporting multiple wallets (Freighter, Albedo, xBull):
+
+  ![Wallet Options](public/wallet-options.png)
 - Live contract response panel displaying transaction hash, status, and Explorer link
 - Human-readable timesheet summary formatting and transaction metrics
 - Auto-sync of active payroll count on load and after execution
